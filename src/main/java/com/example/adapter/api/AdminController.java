@@ -20,10 +20,19 @@ public class AdminController {
     @Path("/routes")
     public Map<String, Object> routes() {
         return Map.of(
-        "loaded", registry.loaded(),
-        "count", registry.size(),
-        "source", registry.source(),
-        "executionMode", config.execution().mockEnabled() ? "mock" : "real", "routes",
-        registry.all());
+                "loaded", registry.loaded(),
+                "count", registry.size(),
+                "source", registry.source(),
+                "executionMode", config.execution().mockEnabled() ? "mock" : "real",
+                "routes", registry.all().stream().map(r -> Map.of(
+                        "tenant", r.definition().tenant(),
+                        "environment", r.definition().environment(),
+                        "inputMethod", r.definition().inputMethod(),
+                        "inputPathTemplate", r.definition().inputPathTemplate(),
+                        "targetSystem", r.definition().targetSystem(),
+                        "targetPathTemplate", r.definition().targetPathTemplate(),
+                        "priority", r.definition().priority()
+                )).toList()
+        );
     }
 }

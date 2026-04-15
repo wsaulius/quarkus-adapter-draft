@@ -1,0 +1,12 @@
+quarkus:
+  http:
+    port: 8080
+
+adapter:
+  excel:
+    source: sample-routes.xlsx
+    sheet: routes
+  execution:
+    mock-enabled: true
+    connect-timeout-ms: 3000
+    read-timeout-ms: 5000

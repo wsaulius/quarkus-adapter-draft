@@ -15,13 +15,12 @@ public class MappingController {
     @Inject MappingEngine engine;
 
     @POST
-    @Path("/execute/{tenant}/{environment}/{resource}")
-    public ExecutionResult execute(@PathParam("tenant")
-    final String tenant,
-    @PathParam("environment") String environment,
-    @PathParam("resource") String resource, JsonNode body)
-    {
-        return engine.execute(new RouteContext(tenant, environment, resource, "POST", body));
+    @Path("/{tenant}/{environment}/{resource: .+}")
+    public ExecutionResult execute(@PathParam("tenant") String tenant,
+                                   @PathParam("environment") String environment,
+                                   @PathParam("resource") String resource,
+                                   JsonNode body) {
+        return engine.execute(new RouteContext(tenant, environment, "/" + resource, "POST", body));
     }
 
     @POST

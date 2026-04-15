@@ -17,8 +17,16 @@ public class AdapterReadinessCheck implements HealthCheck {
     @Override
     public HealthCheckResponse call() {
         if (registry.loaded()) {
-            return HealthCheckResponse.named("adapter-readiness").up().withData("routeCount", registry.size()).withData("source", registry.source()).withData("executionMode", config.execution().mockEnabled() ? "mock" : "real").build();
+            return HealthCheckResponse.named("adapter-readiness")
+                    .up()
+                    .withData("routeCount", registry.size())
+                    .withData("source", registry.source())
+                    .withData("executionMode", config.execution().mockEnabled() ? "mock" : "real")
+                    .build();
         }
-        return HealthCheckResponse.named("adapter-readiness").down().withData("reason", "No routes loaded").build();
+        return HealthCheckResponse.named("adapter-readiness")
+                .down()
+                .withData("reason", "No routes loaded")
+                .build();
     }
 }

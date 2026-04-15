@@ -1,7 +1,6 @@
 package com.example.adapter.engine;
 
 import com.example.adapter.config.AdapterConfig;
-import com.example.adapter.domain.CompiledRoute;
 import com.example.adapter.domain.ExecutionResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,9 +21,12 @@ public class MappingEngine {
     @Inject AdapterConfig config;
 
     public ExecutionResult execute(RouteContext context) {
-        CompiledRoute route = registry.find(context).orElseThrow(() -> new IllegalArgumentException("No mapping found"));
-        JsonNode outbound = transform(context, route);
-        String resolvedUrl = route.definition().targetBaseUrl() + route.definition().targetPath();
+        RouteMatch match = registry.find(context).orElseThrow(() -> new IllegalArgumentException("No mapping found"));
+        var route = match.route();
+        var pathParams = match.pathParams();
+
+        JsonNode outbound = transform(context, pathParams, route.definition().requestMapping());
+        String resolvedUrl = route.definition().targetBaseUrl() + route.renderOutbound(pathParams);
 
         int status;
         JsonNode response;
@@ -33,9 +35,8 @@ public class MappingEngine {
         if (config.execution().mockEnabled()) {
             ObjectNode mock = mapper.createObjectNode();
             mock.put("status", "MOCK_OK");
-            mock.put("method", route.definition().httpMethod());
+            mock.put("method", route.definition().targetMethod());
             mock.put("url", resolvedUrl);
-            mock.put("timeoutMs", route.definition().timeoutMs());
             mock.set("echo", outbound);
             status = 200;
             response = mock;
@@ -49,7 +50,7 @@ public class MappingEngine {
                         .uri(URI.create(resolvedUrl))
                         .timeout(Duration.ofMillis(Math.max(route.definition().timeoutMs(), config.execution().readTimeoutMs())))
                         .header("Content-Type", "application/json");
-                String method = route.definition().httpMethod().toUpperCase();
+                String method = route.definition().targetMethod().toUpperCase();
                 if ("POST".equals(method)) b.POST(HttpRequest.BodyPublishers.ofString(payload));
                 else if ("PUT".equals(method)) b.PUT(HttpRequest.BodyPublishers.ofString(payload));
                 else if ("PATCH".equals(method)) b.method("PATCH", HttpRequest.BodyPublishers.ofString(payload));
@@ -65,15 +66,29 @@ public class MappingEngine {
             }
         }
 
-        return new ExecutionResult(route.definition().targetSystem(), resolvedUrl, mode, status, outbound, response);
+        return new ExecutionResult(
+                route.definition().targetSystem(),
+                resolvedUrl,
+                mode,
+                status,
+                pathParams,
+                outbound,
+                response
+        );
     }
 
-    private JsonNode transform(RouteContext context, CompiledRoute route) {
+    private JsonNode transform(RouteContext context, java.util.Map<String, String> pathParams, java.util.Map<String, String> mapping) {
         ObjectNode out = mapper.createObjectNode();
-        route.definition().requestMapping().forEach((targetField, sourceExpr) -> {
-            String sourceKey = sourceExpr.replace("$.", "");
-            String value = context.lookup(sourceKey);
-            if (value != null) out.put(targetField, value);
+        mapping.forEach((targetField, sourceExpr) -> {
+            if (sourceExpr.startsWith("$.path.")) {
+                String key = sourceExpr.substring("$.path.".length());
+                String value = pathParams.get(key);
+                if (value != null) out.put(targetField, value);
+            } else if (sourceExpr.startsWith("$.")) {
+                String key = sourceExpr.substring(2);
+                String value = context.lookupBody(key);
+                if (value != null) out.put(targetField, value);
+            }
         });
         return out;
     }

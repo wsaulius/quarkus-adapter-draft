@@ -1,8 +1,8 @@
 package com.example.adapter.excel;
 
 import com.example.adapter.domain.CompiledRoute;
-import com.example.adapter.domain.MappingDefinition;
-import com.example.adapter.domain.MatchCriteria;
+import com.example.adapter.domain.ExcelRouteDefinition;
+import com.example.adapter.template.PathTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -20,19 +20,39 @@ public class ExcelMappingLoader {
         try (Workbook workbook = new XSSFWorkbook(is)) {
             Sheet sheet = workbook.getSheet(sheetName);
             if (sheet == null) throw new IllegalStateException("Missing sheet: " + sheetName);
+
             Map<String, Integer> cols = headerMap(sheet.getRow(0));
             List<CompiledRoute> routes = new ArrayList<>();
+
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
                 if (row == null || !bool(row, cols, "enabled")) continue;
+
+                ExcelRouteDefinition def = new ExcelRouteDefinition(
+                        true,
+                        integer(row, cols, "priority", 0),
+                        str(row, cols, "tenant"),
+                        str(row, cols, "environment"),
+                        str(row, cols, "input_method"),
+                        str(row, cols, "input_path_template"),
+                        str(row, cols, "target_system"),
+                        str(row, cols, "target_base_url"),
+                        str(row, cols, "target_path_template"),
+                        str(row, cols, "target_method"),
+                        str(row, cols, "transform_type"),
+                        jsonMap(str(row, cols, "request_mapping_json")),
+                        integer(row, cols, "timeout_ms", 3000),
+                        str(row, cols, "version_tag")
+                );
+
                 routes.add(new CompiledRoute(
-                    new MatchCriteria(str(row, cols, "tenant"), str(row, cols, "environment"), str(row, cols, "resource"), str(row, cols, "input_key"), str(row, cols, "input_value"), str(row, cols, "http_method")),
-                    new MappingDefinition(true, integer(row, cols, "priority", 0), str(row, cols, "target_system"), str(row, cols, "target_base_url"), str(row, cols, "target_path"), str(row, cols, "http_method"), str(row, cols, "transform_type"), jsonMap(str(row, cols, "request_mapping_json")), integer(row, cols, "timeout_ms", 3000), str(row, cols, "version_tag"))
+                        def,
+                        new PathTemplate(def.inputPathTemplate()),
+                        new PathTemplate(def.targetPathTemplate())
                 ));
             }
 
             routes.sort(Comparator.comparingInt((CompiledRoute r) -> r.definition().priority()).reversed());
-
             return routes;
         } catch (Exception e) {
             throw new IllegalStateException("Failed to load Excel mappings", e);
@@ -52,7 +72,10 @@ public class ExcelMappingLoader {
         if (cell == null) return null;
         return switch (cell.getCellType()) {
             case STRING -> cell.getStringCellValue().trim();
-            case NUMERIC -> { double n = cell.getNumericCellValue(); yield Math.floor(n) == n ? String.valueOf((long)n) : String.valueOf(n); }
+            case NUMERIC -> {
+                double n = cell.getNumericCellValue();
+                yield Math.floor(n) == n ? String.valueOf((long) n) : String.valueOf(n);
+            }
             case BOOLEAN -> Boolean.toString(cell.getBooleanCellValue());
             default -> null;
         };
