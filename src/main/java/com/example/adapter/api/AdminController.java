@@ -19,6 +19,11 @@ public class AdminController {
     @GET
     @Path("/routes")
     public Map<String, Object> routes() {
-        return Map.of("loaded", registry.loaded(), "count", registry.size(), "source", registry.source(), "executionMode", config.execution().mockEnabled() ? "mock" : "real", "routes", registry.all());
+        return Map.of(
+        "loaded", registry.loaded(),
+        "count", registry.size(),
+        "source", registry.source(),
+        "executionMode", config.execution().mockEnabled() ? "mock" : "real", "routes",
+        registry.all());
     }
 }

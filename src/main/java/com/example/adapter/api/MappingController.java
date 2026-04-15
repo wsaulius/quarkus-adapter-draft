@@ -16,7 +16,11 @@ public class MappingController {
 
     @POST
     @Path("/execute/{tenant}/{environment}/{resource}")
-    public ExecutionResult execute(@PathParam("tenant") String tenant, @PathParam("environment") String environment, @PathParam("resource") String resource, JsonNode body) {
+    public ExecutionResult execute(@PathParam("tenant")
+    final String tenant,
+    @PathParam("environment") String environment,
+    @PathParam("resource") String resource, JsonNode body)
+    {
         return engine.execute(new RouteContext(tenant, environment, resource, "POST", body));
     }
 
