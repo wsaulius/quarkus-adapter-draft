@@ -1,19 +1,20 @@
 package com.example.adapter.api;
 
 import com.example.adapter.config.AdapterConfig;
+import com.example.adapter.dsl.DslRegistry;
 import com.example.adapter.engine.RouteRegistry;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-
 import java.util.Map;
 
 @Path("/admin")
 @Produces(MediaType.APPLICATION_JSON)
 public class AdminController {
     @Inject RouteRegistry registry;
+    @Inject DslRegistry dslRegistry;
     @Inject AdapterConfig config;
 
     @GET
@@ -24,6 +25,7 @@ public class AdminController {
                 "count", registry.size(),
                 "source", registry.source(),
                 "executionMode", config.execution().mockEnabled() ? "mock" : "real",
+                "transforms", dslRegistry.allTransforms().keySet(),
                 "routes", registry.all().stream().map(r -> Map.of(
                         "tenant", r.definition().tenant(),
                         "environment", r.definition().environment(),
@@ -32,7 +34,8 @@ public class AdminController {
                         "targetSystem", r.definition().targetSystem(),
                         "targetPathTemplate", r.definition().targetPathTemplate(),
                         "priority", r.definition().priority(),
-                        "transformType", r.definition().transformType()
+                        "transformRef", r.definition().transformRef(),
+                        "transformType", r.transform().type()
                 )).toList()
         );
     }

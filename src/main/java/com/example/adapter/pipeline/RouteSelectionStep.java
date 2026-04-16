@@ -9,11 +9,9 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class RouteSelectionStep implements ProcessingStep<ExecutionContext> {
     @Inject RouteRegistry registry;
-
     @Override
     public ExecutionContext apply(ExecutionContext context) {
-        var candidate = registry.find(context.routeKey(), context.fullPath())
-                .orElseThrow(() -> new IllegalArgumentException("No mapping found"));
+        var candidate = registry.find(context.routeKey(), context.fullPath()).orElseThrow(() -> new IllegalArgumentException("No mapping found"));
         return context.withRoute(candidate.route(), candidate.pathParams());
     }
 }

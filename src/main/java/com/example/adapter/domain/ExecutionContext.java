@@ -18,19 +18,15 @@ public record ExecutionContext(
     public static ExecutionContext initial(RouteKey routeKey, String fullPath, JsonNode body) {
         return new ExecutionContext(routeKey, fullPath, body, null, Map.of(), null, null, null, null, null);
     }
-
     public ExecutionContext withRoute(CompiledRoute route, Map<String, String> pathParams) {
         return new ExecutionContext(routeKey, fullPath, body, route, pathParams, outboundRequest, resolvedUrl, downstreamStatus, downstreamResponse, executionMode);
     }
-
     public ExecutionContext withOutboundRequest(JsonNode outboundRequest) {
         return new ExecutionContext(routeKey, fullPath, body, route, pathParams, outboundRequest, resolvedUrl, downstreamStatus, downstreamResponse, executionMode);
     }
-
     public ExecutionContext withResolvedUrl(String resolvedUrl) {
         return new ExecutionContext(routeKey, fullPath, body, route, pathParams, outboundRequest, resolvedUrl, downstreamStatus, downstreamResponse, executionMode);
     }
-
     public ExecutionContext withInvocationResult(String executionMode, Integer downstreamStatus, JsonNode downstreamResponse) {
         return new ExecutionContext(routeKey, fullPath, body, route, pathParams, outboundRequest, resolvedUrl, downstreamStatus, downstreamResponse, executionMode);
     }

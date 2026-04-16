@@ -1,7 +1,5 @@
 package com.example.adapter.domain;
 
-import java.util.Map;
-
 public record ExcelRouteDefinition(
         boolean enabled,
         int priority,
@@ -13,8 +11,7 @@ public record ExcelRouteDefinition(
         String targetBaseUrl,
         String targetPathTemplate,
         String targetMethod,
-        String transformType,
-        Map<String, String> requestMapping,
+        String transformRef,
         int timeoutMs,
         String versionTag
 ) {}

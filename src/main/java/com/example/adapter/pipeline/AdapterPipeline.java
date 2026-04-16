@@ -8,16 +8,9 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class AdapterPipeline {
     private final ProcessingStep<ExecutionContext> pipeline;
-
     @Inject
-    public AdapterPipeline(RouteSelectionStep select,
-                           RequestTransformationStep transform,
-                           UrlRenderingStep render,
-                           InvocationStep invoke) {
+    public AdapterPipeline(RouteSelectionStep select, RequestTransformationStep transform, UrlRenderingStep render, InvocationStep invoke) {
         this.pipeline = select.andThen(transform).andThen(render).andThen(invoke);
     }
-
-    public ExecutionContext execute(ExecutionContext context) {
-        return pipeline.apply(context);
-    }
+    public ExecutionContext execute(ExecutionContext context) { return pipeline.apply(context); }
 }

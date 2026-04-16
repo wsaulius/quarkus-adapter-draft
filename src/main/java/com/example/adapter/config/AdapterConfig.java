@@ -7,13 +7,11 @@ import io.smallrye.config.WithDefault;
 public interface AdapterConfig {
     Excel excel();
     Execution execution();
-
     interface Excel {
         String source();
         @WithDefault("routes")
         String sheet();
     }
-
     interface Execution {
         @WithDefault("true")
         boolean mockEnabled();

@@ -10,3 +10,21 @@ adapter:
     mock-enabled: true
     connect-timeout-ms: 3000
     read-timeout-ms: 5000
+
+adapter-dsl:
+  transforms:
+    orderPayload:
+      type: object
+      fields:
+        countryCode: "$.path.country"
+        shopReference: "$.path.shopId"
+        promoCode: "$.path.promoCode"
+        customerId: "$.customerId"
+        amount: "$.amount"
+        currency: "EUR"
+    compactOrderPayload:
+      type: object
+      fields:
+        countryCode: "$.path.country"
+        customerId: "$.customerId"
+        amount: "$.amount"

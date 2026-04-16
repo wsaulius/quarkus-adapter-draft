@@ -3,7 +3,6 @@ package com.example.adapter.engine;
 import com.example.adapter.domain.CompiledRoute;
 import com.example.adapter.domain.RouteKey;
 import jakarta.enterprise.context.ApplicationScoped;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -12,12 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class RouteRegistry {
     private final AtomicReference<List<CompiledRoute>> routesRef = new AtomicReference<>(List.of());
     private final AtomicReference<String> sourceRef = new AtomicReference<>("uninitialized");
-
-    public void replaceAll(List<CompiledRoute> routes, String source) {
-        routesRef.set(List.copyOf(routes));
-        sourceRef.set(source);
-    }
-
+    public void replaceAll(List<CompiledRoute> routes, String source) { routesRef.set(List.copyOf(routes)); sourceRef.set(source); }
     public Optional<RouteCandidate> find(RouteKey key, String path) {
         for (CompiledRoute route : routesRef.get()) {
             if (!route.routeKeyPredicate().test(key)) continue;
@@ -26,7 +20,6 @@ public class RouteRegistry {
         }
         return Optional.empty();
     }
-
     public boolean loaded() { return !routesRef.get().isEmpty(); }
     public int size() { return routesRef.get().size(); }
     public String source() { return sourceRef.get(); }

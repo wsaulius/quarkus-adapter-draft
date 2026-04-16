@@ -9,22 +9,16 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
-public class JsonTemplateTransformStrategy implements TransformStrategy {
+public class ObjectTransformStrategy implements TransformStrategy {
     @Inject ObjectMapper mapper;
-
-    @Override
-    public String type() {
-        return "json-template";
-    }
+    @Override public String type() { return "object"; }
 
     @Override
     public JsonNode transform(ExecutionContext context) {
         ObjectNode out = mapper.createObjectNode();
-        for (FieldMapping mapping : context.route().compiledRequestMapping()) {
+        for (FieldMapping mapping : context.route().transform().fieldMappings()) {
             String value = mapping.expression().evaluate(context);
-            if (value != null) {
-                out.put(mapping.targetField(), value);
-            }
+            if (value != null) out.put(mapping.targetField(), value);
         }
         return out;
     }

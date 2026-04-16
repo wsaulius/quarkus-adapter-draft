@@ -1,6 +1,7 @@
 package com.example.adapter.health;
 
 import com.example.adapter.config.AdapterConfig;
+import com.example.adapter.dsl.DslRegistry;
 import com.example.adapter.engine.RouteRegistry;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -12,6 +13,7 @@ import org.eclipse.microprofile.health.Readiness;
 @ApplicationScoped
 public class AdapterReadinessCheck implements HealthCheck {
     @Inject RouteRegistry registry;
+    @Inject DslRegistry dslRegistry;
     @Inject AdapterConfig config;
 
     @Override
@@ -20,13 +22,11 @@ public class AdapterReadinessCheck implements HealthCheck {
             return HealthCheckResponse.named("adapter-readiness")
                     .up()
                     .withData("routeCount", registry.size())
+                    .withData("transformCount", dslRegistry.allTransforms().size())
                     .withData("source", registry.source())
                     .withData("executionMode", config.execution().mockEnabled() ? "mock" : "real")
                     .build();
         }
-        return HealthCheckResponse.named("adapter-readiness")
-                .down()
-                .withData("reason", "No routes loaded")
-                .build();
+        return HealthCheckResponse.named("adapter-readiness").down().withData("reason", "No routes loaded").build();
     }
 }

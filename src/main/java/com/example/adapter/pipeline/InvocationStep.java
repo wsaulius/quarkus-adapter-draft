@@ -14,7 +14,6 @@ public class InvocationStep implements ProcessingStep<ExecutionContext> {
     @Inject AdapterConfig config;
     @Inject MockInvocationStrategy mockStrategy;
     @Inject RealHttpInvocationStrategy realStrategy;
-
     @Override
     public ExecutionContext apply(ExecutionContext context) {
         InvocationStrategy strategy = config.execution().mockEnabled() ? mockStrategy : realStrategy;

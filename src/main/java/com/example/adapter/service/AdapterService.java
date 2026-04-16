@@ -17,6 +17,7 @@ public class AdapterService {
         ExecutionContext result = pipeline.execute(initial);
         return new ExecutionResult(
                 result.route().definition().targetSystem(),
+                result.route().definition().transformRef(),
                 result.resolvedUrl(),
                 result.executionMode(),
                 result.downstreamStatus(),

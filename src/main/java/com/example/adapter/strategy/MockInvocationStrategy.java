@@ -9,7 +9,6 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class MockInvocationStrategy implements InvocationStrategy {
     @Inject ObjectMapper mapper;
-
     @Override
     public ExecutionContext invoke(ExecutionContext context) {
         ObjectNode response = mapper.createObjectNode();

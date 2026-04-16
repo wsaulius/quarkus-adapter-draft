@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 public final class PathTemplate {
     private static final Pattern PARAM_PATTERN = Pattern.compile("\\{([A-Za-z0-9_]+)\\}");
-
     private final String template;
     private final Pattern regex;
     private final List<String> paramNames;
@@ -25,22 +24,17 @@ public final class PathTemplate {
         Matcher m = regex.matcher(normalize(path));
         if (!m.matches()) return null;
         Map<String, String> vars = new LinkedHashMap<>();
-        for (String name : paramNames) {
-            vars.put(name, m.group(name));
-        }
+        for (String name : paramNames) vars.put(name, m.group(name));
         return vars;
     }
 
     public String render(Map<String, String> vars) {
         StringBuilder out = new StringBuilder();
         for (Segment s : segments) {
-            if (!s.param()) {
-                out.append(s.value());
-            } else {
+            if (!s.param()) out.append(s.value());
+            else {
                 String v = vars.get(s.value());
-                if (v == null || v.isBlank()) {
-                    throw new IllegalArgumentException("Missing required path param: " + s.value());
-                }
+                if (v == null || v.isBlank()) throw new IllegalArgumentException("Missing required path param: " + s.value());
                 out.append(URLEncoder.encode(v, StandardCharsets.UTF_8));
             }
         }

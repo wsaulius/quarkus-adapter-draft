@@ -24,7 +24,5 @@ public class MappingController {
 
     @POST
     @Path("/ping")
-    public JsonNode ping(JsonNode input) {
-        return input;
-    }
+    public JsonNode ping(JsonNode input) { return input; }
 }
