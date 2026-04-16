@@ -16,15 +16,26 @@ adapter-dsl:
     orderPayload:
       type: object
       fields:
-        countryCode: "$.path.country"
-        shopReference: "$.path.shopId"
-        promoCode: "$.path.promoCode"
-        customerId: "$.customerId"
-        amount: "$.amount"
-        currency: "EUR"
+        countryCode:
+          source: "$.path.country"
+          optional: true
+        shopReference:
+          source: "$.path.shopId"
+        promoCode:
+          source: "$.path.promoCode"
+        customerId:
+          source: "$.customerId"
+        amount:
+          source: "$.amount"
+        currency:
+          source: "EUR"
     compactOrderPayload:
       type: object
       fields:
-        countryCode: "$.path.country"
-        customerId: "$.customerId"
-        amount: "$.amount"
+        countryCode:
+          source: "$.path.country"
+          optional: true
+        customerId:
+          source: "$.customerId"
+        amount:
+          source: "$.amount"

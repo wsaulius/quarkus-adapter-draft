@@ -1,2 +1,7 @@
 package com.example.adapter.expression;
-public record FieldMapping(String targetField, MappingExpression expression) {}
+
+public record FieldMapping(
+        String targetField,
+        MappingExpression expression,
+        boolean optional
+) {}

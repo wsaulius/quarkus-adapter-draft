@@ -3,6 +3,7 @@ package com.example.adapter.health;
 import com.example.adapter.config.AdapterConfig;
 import com.example.adapter.dsl.DslRegistry;
 import com.example.adapter.engine.RouteRegistry;
+import com.example.adapter.excel.error.MappingLoadFailure;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.health.HealthCheck;
@@ -27,6 +28,18 @@ public class AdapterReadinessCheck implements HealthCheck {
                     .withData("executionMode", config.execution().mockEnabled() ? "mock" : "real")
                     .build();
         }
-        return HealthCheckResponse.named("adapter-readiness").down().withData("reason", "No routes loaded").build();
+        MappingLoadFailure failure = registry.failure();
+        if (failure != null) {
+            return HealthCheckResponse.named("adapter-readiness")
+                    .down()
+                    .withData("code", failure.code())
+                    .withData("reason", failure.message())
+                    .withData("ref", failure.ref())
+                    .build();
+        }
+        return HealthCheckResponse.named("adapter-readiness")
+                .down()
+                .withData("reason", "No routes loaded")
+                .build();
     }
 }

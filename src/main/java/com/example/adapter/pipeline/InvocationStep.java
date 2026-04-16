@@ -2,7 +2,7 @@ package com.example.adapter.pipeline;
 
 import com.example.adapter.config.AdapterConfig;
 import com.example.adapter.domain.ExecutionContext;
-import com.example.adapter.fp.ProcessingStep;
+import com.example.adapter.routes.ProcessingStep;
 import com.example.adapter.strategy.InvocationStrategy;
 import com.example.adapter.strategy.MockInvocationStrategy;
 import com.example.adapter.strategy.RealHttpInvocationStrategy;

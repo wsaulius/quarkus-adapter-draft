@@ -1,4 +1,4 @@
-package com.example.adapter.fp;
+package com.example.adapter.routes;
 @FunctionalInterface
 public interface ProcessingStep<T> {
     T apply(T context);

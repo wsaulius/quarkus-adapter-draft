@@ -1,7 +1,7 @@
 package com.example.adapter.pipeline;
 
 import com.example.adapter.domain.ExecutionContext;
-import com.example.adapter.fp.ProcessingStep;
+import com.example.adapter.routes.ProcessingStep;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
