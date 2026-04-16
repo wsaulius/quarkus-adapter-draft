@@ -2,10 +2,11 @@ package com.example.adapter.excel;
 
 import com.example.adapter.domain.CompiledRoute;
 import com.example.adapter.domain.ExcelRouteDefinition;
-import com.example.adapter.template.PathTemplate;
+import com.example.adapter.fp.CompiledRouteFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -14,6 +15,9 @@ import java.util.*;
 
 @ApplicationScoped
 public class ExcelMappingLoader {
+    @Inject
+    CompiledRouteFactory routeFactory;
+
     private final ObjectMapper mapper = new ObjectMapper();
 
     public List<CompiledRoute> load(InputStream is, String sheetName) {
@@ -44,12 +48,7 @@ public class ExcelMappingLoader {
                         integer(row, cols, "timeout_ms", 3000),
                         str(row, cols, "version_tag")
                 );
-
-                routes.add(new CompiledRoute(
-                        def,
-                        new PathTemplate(def.inputPathTemplate()),
-                        new PathTemplate(def.targetPathTemplate())
-                ));
+                routes.add(routeFactory.compile(def));
             }
 
             routes.sort(Comparator.comparingInt((CompiledRoute r) -> r.definition().priority()).reversed());

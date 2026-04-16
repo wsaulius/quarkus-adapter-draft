@@ -12,22 +12,17 @@ public final class PathTemplate {
     private final String template;
     private final Pattern regex;
     private final List<String> paramNames;
-    private final List<Segment> outboundSegments;
+    private final List<Segment> segments;
 
     public PathTemplate(String template) {
         this.template = normalize(template);
         this.paramNames = new ArrayList<>();
         this.regex = Pattern.compile(toRegex(this.template, this.paramNames));
-        this.outboundSegments = parseSegments(this.template);
-    }
-
-    public String template() {
-        return template;
+        this.segments = parseSegments(this.template);
     }
 
     public Map<String, String> match(String path) {
-        String normalized = normalize(path);
-        Matcher m = regex.matcher(normalized);
+        Matcher m = regex.matcher(normalize(path));
         if (!m.matches()) return null;
         Map<String, String> vars = new LinkedHashMap<>();
         for (String name : paramNames) {
@@ -38,15 +33,15 @@ public final class PathTemplate {
 
     public String render(Map<String, String> vars) {
         StringBuilder out = new StringBuilder();
-        for (Segment s : outboundSegments) {
-            if (s.isParam()) {
-                String value = vars.get(s.value());
-                if (value == null || value.isBlank()) {
+        for (Segment s : segments) {
+            if (!s.param()) {
+                out.append(s.value());
+            } else {
+                String v = vars.get(s.value());
+                if (v == null || v.isBlank()) {
                     throw new IllegalArgumentException("Missing required path param: " + s.value());
                 }
-                out.append(URLEncoder.encode(value, StandardCharsets.UTF_8));
-            } else {
-                out.append(s.value());
+                out.append(URLEncoder.encode(v, StandardCharsets.UTF_8));
             }
         }
         return out.toString();
@@ -87,5 +82,5 @@ public final class PathTemplate {
         return v.replaceAll("/+", "/");
     }
 
-    private record Segment(boolean isParam, String value) {}
+    private record Segment(boolean param, String value) {}
 }

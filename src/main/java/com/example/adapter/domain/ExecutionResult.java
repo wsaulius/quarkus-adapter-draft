@@ -1,7 +1,6 @@
 package com.example.adapter.domain;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.Map;
 
 public record ExecutionResult(

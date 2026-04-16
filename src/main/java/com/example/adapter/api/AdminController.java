@@ -31,7 +31,8 @@ public class AdminController {
                         "inputPathTemplate", r.definition().inputPathTemplate(),
                         "targetSystem", r.definition().targetSystem(),
                         "targetPathTemplate", r.definition().targetPathTemplate(),
-                        "priority", r.definition().priority()
+                        "priority", r.definition().priority(),
+                        "transformType", r.definition().transformType()
                 )).toList()
         );
     }

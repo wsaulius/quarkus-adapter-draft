@@ -1,8 +1,7 @@
 package com.example.adapter.api;
 
 import com.example.adapter.domain.ExecutionResult;
-import com.example.adapter.engine.MappingEngine;
-import com.example.adapter.engine.RouteContext;
+import com.example.adapter.service.AdapterService;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -12,7 +11,7 @@ import jakarta.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class MappingController {
-    @Inject MappingEngine engine;
+    @Inject AdapterService service;
 
     @POST
     @Path("/{tenant}/{environment}/{resource: .+}")
@@ -20,10 +19,12 @@ public class MappingController {
                                    @PathParam("environment") String environment,
                                    @PathParam("resource") String resource,
                                    JsonNode body) {
-        return engine.execute(new RouteContext(tenant, environment, "/" + resource, "POST", body));
+        return service.execute(tenant, environment, "/" + resource, "POST", body);
     }
 
     @POST
     @Path("/ping")
-    public JsonNode ping(JsonNode input) { return input; }
+    public JsonNode ping(JsonNode input) {
+        return input;
+    }
 }
