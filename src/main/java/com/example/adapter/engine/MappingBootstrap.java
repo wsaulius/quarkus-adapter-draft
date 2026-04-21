@@ -9,21 +9,31 @@ import io.quarkus.runtime.Startup;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
 import java.io.InputStream;
 
 @Startup
 @ApplicationScoped
 public class MappingBootstrap {
-    @Inject AdapterConfig config;
-    @Inject ExcelWorkbookLoader loader;
-    @Inject WorkbookCompiler compiler;
-    @Inject RouteRegistry registry;
+    @Inject
+    AdapterConfig config;
+
+    @Inject
+    ExcelWorkbookLoader loader;
+
+    @Inject
+    WorkbookCompiler compiler;
+
+    @Inject
+    RouteRegistry registry;
 
     @PostConstruct
     void init() {
         String source = config.excel().source();
         try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(source)) {
-            if (is == null) throw new IllegalStateException("Excel file not found on classpath: " + source);
+            if (is == null) {
+                throw new IllegalStateException("Excel file not found on classpath: " + source);
+            }
             registry.replaceAll(compiler.compile(loader.load(is)), "classpath:" + source);
         } catch (ExcelMappingException e) {
             registry.recordFailure(new MappingLoadFailure(e.code(), e.getMessage(), e.location().asRef()), "classpath:" + source);
