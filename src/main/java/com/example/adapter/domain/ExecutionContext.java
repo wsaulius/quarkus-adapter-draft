@@ -1,33 +1,21 @@
 package com.example.adapter.domain;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import java.util.Map;
+import java.util.*;
 
-public record ExecutionContext(
-        RouteKey routeKey,
-        String fullPath,
-        JsonNode body,
-        CompiledRoute route,
-        Map<String, String> pathParams,
-        JsonNode outboundRequest,
-        String resolvedUrl,
-        Integer downstreamStatus,
-        JsonNode downstreamResponse,
-        String executionMode
-) {
-    public static ExecutionContext initial(RouteKey routeKey, String fullPath, JsonNode body) {
-        return new ExecutionContext(routeKey, fullPath, body, null, Map.of(), null, null, null, null, null);
+public record ExecutionContext(RouteKey routeKey, String fullPath, JsonNode body, CompiledRoute route, Map<String,String> pathParams, Map<String,JsonNode> stepResults, JsonNode finalResponse, String executionMode) {
+    public static ExecutionContext initial(RouteKey key, String path, JsonNode body) {
+        return new ExecutionContext(key, path, body, null, Map.of(), new LinkedHashMap<>(), null, null);
     }
-    public ExecutionContext withRoute(CompiledRoute route, Map<String, String> pathParams) {
-        return new ExecutionContext(routeKey, fullPath, body, route, pathParams, outboundRequest, resolvedUrl, downstreamStatus, downstreamResponse, executionMode);
+    public ExecutionContext withRoute(CompiledRoute route, Map<String,String> pathParams) {
+        return new ExecutionContext(routeKey, fullPath, body, route, pathParams, new LinkedHashMap<>(stepResults), finalResponse, executionMode);
     }
-    public ExecutionContext withOutboundRequest(JsonNode outboundRequest) {
-        return new ExecutionContext(routeKey, fullPath, body, route, pathParams, outboundRequest, resolvedUrl, downstreamStatus, downstreamResponse, executionMode);
+    public ExecutionContext withStepResult(String id, JsonNode response, String mode) {
+        Map<String,JsonNode> m = new LinkedHashMap<>(stepResults);
+        m.put(id, response);
+        return new ExecutionContext(routeKey, fullPath, body, route, pathParams, m, finalResponse, mode);
     }
-    public ExecutionContext withResolvedUrl(String resolvedUrl) {
-        return new ExecutionContext(routeKey, fullPath, body, route, pathParams, outboundRequest, resolvedUrl, downstreamStatus, downstreamResponse, executionMode);
-    }
-    public ExecutionContext withInvocationResult(String executionMode, Integer downstreamStatus, JsonNode downstreamResponse) {
-        return new ExecutionContext(routeKey, fullPath, body, route, pathParams, outboundRequest, resolvedUrl, downstreamStatus, downstreamResponse, executionMode);
+    public ExecutionContext withFinalResponse(JsonNode response, String mode) {
+        return new ExecutionContext(routeKey, fullPath, body, route, pathParams, new LinkedHashMap<>(stepResults), response, mode);
     }
 }
