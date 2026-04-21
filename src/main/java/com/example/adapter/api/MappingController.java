@@ -2,27 +2,20 @@ package com.example.adapter.api;
 
 import com.example.adapter.domain.ExecutionResult;
 import com.example.adapter.service.AdapterService;
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
-@Path("/adapter")
-@Consumes(MediaType.APPLICATION_JSON)
+@Path("/orchestrator")
 @Produces(MediaType.APPLICATION_JSON)
 public class MappingController {
     @Inject AdapterService service;
 
-    @POST
+    @GET
     @Path("/{tenant}/{environment}/{resource: .+}")
     public ExecutionResult execute(@PathParam("tenant") String tenant,
                                    @PathParam("environment") String environment,
-                                   @PathParam("resource") String resource,
-                                   JsonNode body) {
-        return service.execute(tenant, environment, "/" + resource, "POST", body);
+                                   @PathParam("resource") String resource) {
+        return service.execute(tenant, environment, "/" + resource, "GET", null);
     }
-
-    @POST
-    @Path("/ping")
-    public JsonNode ping(JsonNode input) { return input; }
 }

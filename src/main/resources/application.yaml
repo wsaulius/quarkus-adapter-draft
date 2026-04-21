@@ -1,41 +1,19 @@
 quarkus:
   http:
     port: 8080
+  log:
+    category:
+      "com.example.adapter":
+        level: INFO
 
 adapter:
   excel:
-    source: sample-routes.xlsx
-    sheet: routes
+    source: orchestrator.xlsx
+    routes-sheet: routes
+    steps-sheet: steps
+    transforms-sheet: transforms
+    aggregates-sheet: aggregates
   execution:
-    mock-enabled: true
+    mock-enabled: false
     connect-timeout-ms: 3000
     read-timeout-ms: 5000
-
-adapter-dsl:
-  transforms:
-    orderPayload:
-      type: object
-      fields:
-        countryCode:
-          source: "$.path.country"
-          optional: true
-        shopReference:
-          source: "$.path.shopId"
-        promoCode:
-          source: "$.path.promoCode"
-        customerId:
-          source: "$.customerId"
-        amount:
-          source: "$.amount"
-        currency:
-          source: "EUR"
-    compactOrderPayload:
-      type: object
-      fields:
-        countryCode:
-          source: "$.path.country"
-          optional: true
-        customerId:
-          source: "$.customerId"
-        amount:
-          source: "$.amount"

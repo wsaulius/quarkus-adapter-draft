@@ -1,12 +1,4 @@
 package com.example.adapter.excel.error;
-
-public class ExcelMissingCellValueException extends ExcelCellException {
-    public ExcelMissingCellValueException(String sheetName, int rowIndex, int columnIndex, String columnName) {
-        super("EXCEL_MISSING_CELL_VALUE",
-                "Missing required value for column '" + columnName + "' at " +
-                        new ExcelLocation(sheetName, rowIndex, columnIndex).asRef(),
-                new ExcelLocation(sheetName, rowIndex, columnIndex),
-                columnName,
-                null);
-    }
+public class ExcelMissingCellValueException extends ExcelMappingException {
+    public ExcelMissingCellValueException(String sheet, int row, int col, String name) { super("EXCEL_MISSING_CELL_VALUE", "Missing required value for column '" + name + "' at " + new ExcelLocation(sheet, row, col).asRef(), new ExcelLocation(sheet, row, col), null); }
 }
