@@ -1,3 +1,22 @@
+/**
+ * Sequential implementation of {@link PlanExecutor}.
+ *
+ * <p>This executor runs all steps in a {@link com.example.adapter.domain.CompiledPlan}
+ * in declared order and updates the {@link com.example.adapter.domain.ExecutionContext}
+ * after each call.
+ *
+ * <p>Per step it:
+ * <ul>
+ *   <li>Builds a request object from the compiled transform</li>
+ *   <li>Resolves expressions against the current execution context</li>
+ *   <li>Renders the configured URL template</li>
+ *   <li>Invokes the downstream endpoint through the decorated invoker chain</li>
+ *   <li>Stores the step response under the step id</li>
+ * </ul>
+ *
+ * <p>This class is the main runtime realization of the one-to-many orchestration model.
+ * A future parallel executor can implement the same interface without changing the pipeline.
+ */
 package com.example.adapter.core;
 
 import com.example.adapter.domain.CompiledField;

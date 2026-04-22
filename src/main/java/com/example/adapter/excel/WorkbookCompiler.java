@@ -1,3 +1,19 @@
+/**
+ * Compiles workbook rows into an immutable orchestration graph.
+ *
+ * <p>This class sits between raw Excel data and runtime execution. It resolves workbook
+ * rows into compiled transforms, compiled plan steps, compiled aggregators, and compiled routes.
+ *
+ * <p>Compilation rules:
+ * <ul>
+ *   <li>Transforms are grouped by transform reference</li>
+ *   <li>Steps are grouped and ordered by plan id</li>
+ *   <li>Aggregates are grouped by plan id</li>
+ *   <li>Routes are matched to plans and wrapped with inbound path matchers</li>
+ * </ul>
+ *
+ * <p>The output graph is immutable and optimized for request-time use.
+ */
 package com.example.adapter.excel;
 
 import com.example.adapter.core.OrchestrationGraph;

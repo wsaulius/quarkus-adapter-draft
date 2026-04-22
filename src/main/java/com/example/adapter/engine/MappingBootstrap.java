@@ -1,3 +1,12 @@
+/**
+ * Loads and registers workbook configuration at application startup.
+ *
+ * <p>This startup bean reads the configured workbook, invokes the loader and compiler,
+ * and publishes the resulting graph into the registry.
+ *
+ * <p>If loading fails, the failure is preserved with a precise message and Excel reference
+ * so readiness endpoints can report the problem clearly.
+ */
 package com.example.adapter.engine;
 
 import com.example.adapter.config.AdapterConfig;

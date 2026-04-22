@@ -1,3 +1,9 @@
+/**
+ * Decorator that adds invocation logging around a {@link StepInvoker}.
+ *
+ * <p>This class logs the start and completion of each step call without changing
+ * transport behavior. It demonstrates the Decorator pattern used in the invocation layer.
+ */
 package com.example.adapter.orch;
 
 import com.example.adapter.domain.*;

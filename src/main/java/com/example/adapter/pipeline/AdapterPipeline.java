@@ -1,3 +1,16 @@
+/**
+ * Composes the main request-processing flow.
+ *
+ * <p>The pipeline coordinates three high-level stages:
+ * <ul>
+ *   <li>Route selection</li>
+ *   <li>Plan execution</li>
+ *   <li>Response aggregation</li>
+ * </ul>
+ *
+ * <p>Each stage is implemented as a small processing step. This keeps the orchestration flow
+ * readable while delegating the detailed work to specialized components.
+ */
 package com.example.adapter.pipeline;
 
 import com.example.adapter.domain.ExecutionContext;

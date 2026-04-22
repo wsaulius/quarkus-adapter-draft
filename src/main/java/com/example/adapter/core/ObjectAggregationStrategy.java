@@ -1,3 +1,13 @@
+/**
+ * Aggregates step results into a JSON object.
+ *
+ * <p>This strategy evaluates compiled aggregate field definitions and writes the resulting
+ * values into a single object node. In practice, it is the final assembly stage of the
+ * orchestrator response.
+ *
+ * <p>The strategy is separate from plan execution so that other aggregation modes can be
+ * introduced later without changing step execution itself.
+ */
 package com.example.adapter.core;
 
 import com.example.adapter.domain.CompiledAggregator;

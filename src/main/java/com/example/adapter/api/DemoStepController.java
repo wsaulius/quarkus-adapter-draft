@@ -1,3 +1,10 @@
+/**
+ * Internal demo endpoints used to visualize orchestration behavior.
+ *
+ * <p>These endpoints allow the same application to act as both orchestrator and sample
+ * downstream systems. They make it easy to observe path-variable substitution, step
+ * execution, and aggregation without depending on external services.
+ */
 package com.example.adapter.api;
 
 import jakarta.ws.rs.GET;

@@ -1,3 +1,20 @@
+/**
+ * Default runtime evaluator for parsed expressions.
+ *
+ * <p>This class interprets {@link com.example.adapter.expression.ExpressionDef}
+ * instances against the current {@link com.example.adapter.domain.ExecutionContext}.
+ *
+ * <p>Supported sources:
+ * <ul>
+ *   <li>PATH: values extracted from the inbound route template</li>
+ *   <li>BODY: values from the inbound request body</li>
+ *   <li>STEP: values from previously executed step results</li>
+ *   <li>LITERAL: constant values from workbook configuration</li>
+ * </ul>
+ *
+ * <p>The evaluator is intentionally small and explicit. It is meant to be predictable,
+ * easy to validate, and easy to extend without introducing a general scripting engine.
+ */
 package com.example.adapter.core;
 
 import com.example.adapter.domain.ExecutionContext;

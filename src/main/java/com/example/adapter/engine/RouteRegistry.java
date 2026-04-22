@@ -1,3 +1,10 @@
+/**
+ * Holds the active compiled orchestration graph.
+ *
+ * <p>The registry exposes request-time route lookup and stores the last load failure
+ * for readiness and diagnostics. It isolates mutable bootstrap state from the rest
+ * of the runtime model.
+ */
 package com.example.adapter.engine;
 
 import com.example.adapter.core.OrchestrationGraph;

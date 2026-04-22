@@ -1,3 +1,9 @@
+/**
+ * Application-facing orchestration service.
+ *
+ * <p>This service converts inbound request data into an execution context, runs the pipeline,
+ * and maps the final context into a response object returned by the REST layer.
+ */
 package com.example.adapter.service;
 
 import com.example.adapter.domain.*;

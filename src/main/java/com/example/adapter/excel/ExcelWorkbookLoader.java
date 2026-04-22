@@ -1,3 +1,12 @@
+/**
+ * Loads workbook sheets into row-based domain objects.
+ *
+ * <p>This loader is responsible for workbook access and structural validation.
+ * It verifies sheet presence, required headers, required values, and numeric parsing.
+ *
+ * <p>It does not build runtime orchestration objects. That work is delegated to
+ * {@link WorkbookCompiler}. This keeps loading and compilation separate.
+ */
 package com.example.adapter.excel;
 
 import com.example.adapter.config.AdapterConfig;

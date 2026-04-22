@@ -1,3 +1,9 @@
+/**
+ * Decorator that records step execution time.
+ *
+ * <p>This class measures wall-clock duration for each step invocation and logs it.
+ * It is intended to remain independent from transport and orchestration logic.
+ */
 package com.example.adapter.orch;
 
 import com.example.adapter.domain.*;

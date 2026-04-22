@@ -1,3 +1,12 @@
+/**
+ * Technical runtime configuration for the orchestrator.
+ *
+ * <p>This configuration intentionally excludes business routing logic.
+ * It contains only workbook location, sheet names, and execution-time settings such as
+ * HTTP mode and timeouts.
+ *
+ * <p>Business orchestration remains Excel-centric by design.
+ */
 package com.example.adapter.config;
 
 import io.smallrye.config.ConfigMapping;

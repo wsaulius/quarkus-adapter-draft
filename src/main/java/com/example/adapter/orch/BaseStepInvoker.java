@@ -1,3 +1,15 @@
+/**
+ * Performs the actual step transport call.
+ *
+ * <p>This class is the transport-level invoker used by orchestration steps. It supports:
+ * <ul>
+ *   <li>Mock mode for local testing and deterministic demos</li>
+ *   <li>Real HTTP execution using the JDK HTTP client</li>
+ * </ul>
+ *
+ * <p>It is intentionally minimal and is normally wrapped by decorators that add logging,
+ * timing, and other cross-cutting behavior.
+ */
 package com.example.adapter.orch;
 
 import com.example.adapter.config.AdapterConfig;

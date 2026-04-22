@@ -1,3 +1,9 @@
+/**
+ * Produces the final orchestrator response from collected step results.
+ *
+ * <p>This step delegates the actual merge logic to an {@link com.example.adapter.core.AggregationStrategy}
+ * and stores the resulting JSON structure in the execution context.
+ */
 package com.example.adapter.pipeline;
 
 import com.example.adapter.core.AggregationStrategy;
