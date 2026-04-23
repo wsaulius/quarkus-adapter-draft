@@ -19,11 +19,7 @@
  */
 package com.example.adapter.core;
 
-import com.example.adapter.domain.CompiledField;
-import com.example.adapter.domain.CompiledPlan;
-import com.example.adapter.domain.CompiledPlanStep;
-import com.example.adapter.domain.ExecutionContext;
-import com.example.adapter.domain.StepResult;
+import com.example.adapter.domain.*;
 import com.example.adapter.orch.StepInvoker;
 import com.example.adapter.orch.StepInvokerFactory;
 import com.example.adapter.template.TemplateRenderer;

@@ -3,11 +3,14 @@ package com.example.adapter.template;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class TemplateRenderer {
-    private TemplateRenderer() {}
-    public static String render(String template, Map<String,String> vars) {
+    private TemplateRenderer() {
+    }
+
+    public static String render(String template, Map<String, String> vars) {
         Matcher m = Pattern.compile("\\{([A-Za-z0-9_]+)\\}").matcher(template);
         StringBuffer sb = new StringBuffer();
         while (m.find()) {

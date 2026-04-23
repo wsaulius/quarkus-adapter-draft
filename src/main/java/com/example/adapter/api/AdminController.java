@@ -3,20 +3,26 @@ package com.example.adapter.api;
 import com.example.adapter.config.AdapterConfig;
 import com.example.adapter.engine.RouteRegistry;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import java.util.*;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Path("/admin")
 @Produces(MediaType.APPLICATION_JSON)
 public class AdminController {
-    @Inject RouteRegistry registry;
-    @Inject AdapterConfig config;
+    @Inject
+    RouteRegistry registry;
+    @Inject
+    AdapterConfig config;
 
     @GET
     @Path("/routes")
-    public Map<String,Object> routes() {
-        Map<String,Object> out = new LinkedHashMap<>();
+    public Map<String, Object> routes() {
+        Map<String, Object> out = new LinkedHashMap<>();
         out.put("loaded", registry.loaded());
         out.put("count", registry.size());
         out.put("source", registry.source());

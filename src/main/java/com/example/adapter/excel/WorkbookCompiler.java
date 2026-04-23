@@ -17,27 +17,13 @@
 package com.example.adapter.excel;
 
 import com.example.adapter.core.OrchestrationGraph;
-import com.example.adapter.domain.AggregateFieldRow;
-import com.example.adapter.domain.CompiledAggregator;
-import com.example.adapter.domain.CompiledField;
-import com.example.adapter.domain.CompiledPlan;
-import com.example.adapter.domain.CompiledPlanStep;
-import com.example.adapter.domain.CompiledRoute;
-import com.example.adapter.domain.CompiledTransform;
-import com.example.adapter.domain.RouteKey;
-import com.example.adapter.domain.RouteRow;
-import com.example.adapter.domain.StepRow;
-import com.example.adapter.domain.TransformFieldRow;
+import com.example.adapter.domain.*;
 import com.example.adapter.expression.ExpressionParser;
 import com.example.adapter.template.InboundPathMatcher;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 @ApplicationScoped
@@ -59,8 +45,8 @@ public class WorkbookCompiler {
             );
             Predicate<RouteKey> predicate = key ->
                     row.tenant().equalsIgnoreCase(key.tenant()) &&
-                    row.environment().equalsIgnoreCase(key.environment()) &&
-                    row.inputMethod().equalsIgnoreCase(key.method());
+                            row.environment().equalsIgnoreCase(key.environment()) &&
+                            row.inputMethod().equalsIgnoreCase(key.method());
 
             routes.add(new CompiledRoute(row, predicate, new InboundPathMatcher(row.inputPathTemplate()), plan));
         }
