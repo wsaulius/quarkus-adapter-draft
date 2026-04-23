@@ -1,8 +1,16 @@
+/**
+ * Selects the compiled route matching the inbound request.
+ *
+ * <p>This step evaluates route predicates and inbound path templates, then stores the
+ * selected route and extracted path parameters in the execution context.
+ *
+ * <p>It is the boundary between inbound transport and compiled orchestration logic.
+ */
 package com.example.adapter.pipeline;
 
 import com.example.adapter.domain.ExecutionContext;
 import com.example.adapter.engine.RouteRegistry;
-import com.example.adapter.routes.ProcessingStep;
+import com.example.adapter.fp.ProcessingStep;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
