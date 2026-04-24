@@ -1,6 +1,4 @@
 quarkus:
-  http:
-    port: 8080
   log:
     category:
       "com.example.adapter":

@@ -61,18 +61,18 @@ public class DemoStepController {
     }
 
     @GET
-    @Path("/irisCallAccumulated/{model}")
-    public Map<String, Object> irisCallAccumulated(@PathParam("model") String model) {
-        LOG.infof("Demo irisCallAccumulated received model=%s", model);
+    @Path("/providerCallAccumulated/{model}")
+    public Map<String, Object> providerCallAccumulated(@PathParam("model") String model) {
+        LOG.infof("Demo providerCallAccumulated received model=%s", model);
 
         Map<String, Object> out = new LinkedHashMap<>();
-        out.put("step", "irisCallAccumulated");
+        out.put("step", "providerCallAccumulated");
         out.put("model", model);
         out.put("currency", "EUR");
         out.put("priceList", "STANDARD-" + model);
-        out.put("message", "irisCallAccumulated data resolved for model");
+        out.put("message", "providerCallAccumulated data resolved for model");
 
-        LOG.infof("Demo irisCallAccumulated returning currency=%s priceList=%s",
+        LOG.infof("Demo providerCallAccumulated returning currency=%s priceList=%s",
                 out.get("currency"), out.get("priceList"));
         return out;
     }

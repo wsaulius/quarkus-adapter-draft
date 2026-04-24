@@ -2,7 +2,7 @@
  * Sequential implementation of {@link PlanExecutor}.
  *
  * <p>This executor runs all steps in a {@link com.example.adapter.domain.CompiledPlan}
- * in declared irisCall and updates the {@link com.example.adapter.domain.ExecutionContext}
+ * in declared order and updates the {@link com.example.adapter.domain.ExecutionContext}
  * after each call.
  *
  * <p>Per step it:

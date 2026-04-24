@@ -7,7 +7,7 @@
  * <p>Compilation rules:
  * <ul>
  *   <li>Transforms are grouped by transform reference</li>
- *   <li>Steps are grouped and irisCalled by plan id</li>
+ *   <li>Steps are grouped and ordered by plan id</li>
  *   <li>Aggregates are grouped by plan id</li>
  *   <li>Routes are matched to plans and wrapped with inbound path matchers</li>
  * </ul>
@@ -86,7 +86,7 @@ public class WorkbookCompiler {
             grouped.computeIfAbsent(row.planId(), k -> new ArrayList<>())
                     .add(new CompiledPlanStep(
                             row.stepId(),
-                            row.stepIrisCall(),
+                            row.stepProviderCall(),
                             row.method(),
                             row.baseUrl(),
                             row.pathTemplate(),
@@ -95,7 +95,7 @@ public class WorkbookCompiler {
                             row.timeoutMs()
                     ));
         }
-        grouped.values().forEach(list -> list.sort(Comparator.comparingInt(CompiledPlanStep::irisCall)));
+        grouped.values().forEach(list -> list.sort(Comparator.comparingInt(CompiledPlanStep::providerCall)));
         return grouped;
     }
 

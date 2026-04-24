@@ -52,11 +52,11 @@ public class ExcelWorkbookLoader {
 
     private List<StepRow> loadSteps(Sheet sheet, String name) {
         requireSheet(sheet, name);
-        Map<String,Integer> h = headers(sheet, name, List.of("enabled","plan_id","step_id","step_irisCall","method","base_url","path_template","transform_ref","stop_on_error","timeout_ms"));
+        Map<String,Integer> h = headers(sheet, name, List.of("enabled","plan_id","step_id","step_order","method","base_url","path_template","transform_ref","stop_on_error","timeout_ms"));
         List<StepRow> out = new ArrayList<>();
         for (int i=1;i<=sheet.getLastRowNum();i++) {
             Row r = sheet.getRow(i); if (r == null || !bool(r,h,"enabled")) continue;
-            out.add(new StepRow(true, req(r,h,name,"plan_id"), req(r,h,name,"step_id"), reqInt(r,h,name,"step_irisCall"), req(r,h,name,"method"), req(r,h,name,"base_url"), req(r,h,name,"path_template"), req(r,h,name,"transform_ref"), bool(r,h,"stop_on_error"), reqInt(r,h,name,"timeout_ms")));
+            out.add(new StepRow(true, req(r,h,name,"plan_id"), req(r,h,name,"step_id"), reqInt(r,h,name,"step_order"), req(r,h,name,"method"), req(r,h,name,"base_url"), req(r,h,name,"path_template"), req(r,h,name,"transform_ref"), bool(r,h,"stop_on_error"), reqInt(r,h,name,"timeout_ms")));
         }
         return out;
     }
