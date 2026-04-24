@@ -19,6 +19,7 @@ package com.example.adapter.core;
 
 import com.example.adapter.domain.ExecutionContext;
 import com.example.adapter.expression.ExpressionDef;
+import com.example.adapter.expression.ExpressionKind;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;

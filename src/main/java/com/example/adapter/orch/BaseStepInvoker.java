@@ -13,26 +13,20 @@
 package com.example.adapter.orch;
 
 import com.example.adapter.config.AdapterConfig;
-import com.example.adapter.domain.CompiledPlanStep;
-import com.example.adapter.domain.ExecutionContext;
-import com.example.adapter.domain.StepResult;
+import com.example.adapter.domain.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.net.http.*;
 import java.time.Duration;
 
 @ApplicationScoped
 public class BaseStepInvoker implements StepInvoker {
-    @Inject
-    AdapterConfig config;
-    @Inject
-    ObjectMapper mapper;
+    @Inject AdapterConfig config;
+    @Inject ObjectMapper mapper;
 
     @Override
     public StepResult invoke(ExecutionContext context, CompiledPlanStep step, String url, JsonNode requestBody) {
@@ -48,15 +42,10 @@ public class BaseStepInvoker implements StepInvoker {
             HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofMillis(config.execution().connectTimeoutMs())).build();
             HttpRequest.Builder b = HttpRequest.newBuilder().uri(URI.create(url)).timeout(Duration.ofMillis(step.timeoutMs()));
             if ("GET".equalsIgnoreCase(step.method())) b.GET();
-            else
-                b.method(step.method().toUpperCase(), HttpRequest.BodyPublishers.ofString(requestBody == null ? "" : mapper.writeValueAsString(requestBody)));
+            else b.method(step.method().toUpperCase(), HttpRequest.BodyPublishers.ofString(requestBody == null ? "" : mapper.writeValueAsString(requestBody)));
             HttpResponse<String> r = client.send(b.build(), HttpResponse.BodyHandlers.ofString());
             JsonNode body;
-            try {
-                body = mapper.readTree(r.body());
-            } catch (Exception ex) {
-                body = mapper.createObjectNode().put("rawBody", r.body());
-            }
+            try { body = mapper.readTree(r.body()); } catch (Exception ex) { body = mapper.createObjectNode().put("rawBody", r.body()); }
             return new StepResult(step.id(), url, r.statusCode(), requestBody, body, "real");
         } catch (Exception e) {
             throw new IllegalStateException("Step invocation failed for " + step.id() + " at " + url, e);

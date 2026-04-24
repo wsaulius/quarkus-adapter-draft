@@ -5,17 +5,13 @@ import com.example.adapter.engine.RouteRegistry;
 import com.example.adapter.excel.error.MappingLoadFailure;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.eclipse.microprofile.health.HealthCheck;
-import org.eclipse.microprofile.health.HealthCheckResponse;
-import org.eclipse.microprofile.health.Readiness;
+import org.eclipse.microprofile.health.*;
 
 @Readiness
 @ApplicationScoped
 public class AdapterReadinessCheck implements HealthCheck {
-    @Inject
-    RouteRegistry registry;
-    @Inject
-    AdapterConfig config;
+    @Inject RouteRegistry registry;
+    @Inject AdapterConfig config;
 
     @Override
     public HealthCheckResponse call() {

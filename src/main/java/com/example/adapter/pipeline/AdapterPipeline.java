@@ -27,7 +27,5 @@ public class AdapterPipeline {
         this.pipeline = routeSelectionStep.andThen(planExecutionStep).andThen(aggregationStep);
     }
 
-    public ExecutionContext execute(ExecutionContext context) {
-        return pipeline.apply(context);
-    }
+    public ExecutionContext execute(ExecutionContext context) { return pipeline.apply(context); }
 }

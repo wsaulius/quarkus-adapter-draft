@@ -1,11 +1,7 @@
 package com.example.adapter.template;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
+import java.util.regex.*;
 
 public final class InboundPathMatcher {
     private final Pattern regex;
@@ -31,11 +27,11 @@ public final class InboundPathMatcher {
         return sb.toString();
     }
 
-    public Map<String, String> match(String path) {
+    public Map<String,String> match(String path) {
         String p = path.startsWith("/") ? path : "/" + path;
         Matcher m = regex.matcher(p);
         if (!m.matches()) return null;
-        Map<String, String> out = new LinkedHashMap<>();
+        Map<String,String> out = new LinkedHashMap<>();
         for (String n : names) out.put(n, m.group(n));
         return out;
     }
